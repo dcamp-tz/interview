@@ -1,0 +1,124 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.App-header {
+  background-color: #262a31;
+  min-height: 64px;
+  position: sticky;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  top: 0px;
+  z-index: 1;
+  text-align: center;
+  color: white;
+}
+
+.App-save-button {
+  background-color: #404040;
+  border-color: #383838;
+  height: 32px;
+  width: 32px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  text-align: center;
+  color: white;
+}
+
+.App-header-title {
+  font-size: calc(10px + 2vmin);
+  text-align: center;
+  color: white;
+}
+
+.App-header-input {
+  font-size: calc(10px + 2vmin);
+  text-align: center;
+  width: 256px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  text-align: left;
+  background-color: #262a31;
+  font-size: calc(6px + 2vmin);
+  border-color: white;
+  color: white;
+}
+
+.App-body {
+  background-color: #111316;
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+}
+
+.App-spacer {
+  background-color: #00000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  min-width: 720px;
+  min-height: 1vh;
+  color: white;
+  font-size: calc(4px + 2vmin);
+}
+
+.App-question {
+  background-color: #404040;
+  color: #c7c7c7;
+  text-align: left;
+  padding: 10px;
+  width: 700px;
+  font-size: 16px;
+}
+
+.App-sub-question {
+  background-color: #383838;
+  color: #c7c7c7;
+  text-align: left;
+  padding: 5px;
+  padding-left: 20px;
+  width: 695px;
+  font-size: 16px;
+}
+
+.App-answer-single {
+  background-color: #202020;
+  color: #c7c7c7;
+  width: 720px;
+  text-align: left;
+  font-family: monospace;
+}
+
+.App-answer-multi {
+  background-color: #202020;
+  color: #c7c7c7;
+  width: 720px;
+  min-height: 48px;
+  text-align: left;
+  font-family: monospace;
+}
+
+.App-viewer {
+  background-color: #202020;
+  color: #c7c7c7;
+  width: 720px;
+  text-align: left;
+  font-family: monospace;
+}
