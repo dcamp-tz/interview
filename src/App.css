@@ -22,17 +22,18 @@
 }
 
 .App-save-button {
-  background-color: #404040;
-  border-color: #383838;
-  height: 32px;
-  width: 32px;
+  background-color: #262a31;
+  border-color: #262a31;
+  height: 28px;
+  width: 28px;
   margin-top: 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(12px + 2vmin);
   text-align: center;
+  outline: none;
   color: white;
 }
 
@@ -121,4 +122,8 @@
   width: 720px;
   text-align: left;
   font-family: monospace;
+}
+
+.App-toast {
+  
 }

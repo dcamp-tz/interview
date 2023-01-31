@@ -4,7 +4,10 @@ import "./App.css";
 
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "./prism.js";
-import "./prism.css"; //Example style, you can use another
+import "./prism.css"; // Code gormatting style sheet
+
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [name, setName] = useState("Name");
@@ -22,7 +25,15 @@ function App() {
   };
 
   const DownloadData = () => {
-    console.log(JSON.stringify(data));
+    toast.info("Submitting Entry...", {
+      position: "top-center",
+      hideProgressBar: true,
+      autoClose: 3000,
+      theme: "colored",
+      draggable: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+    });
 
     fetch(
       "https://script.google.com/macros/s/AKfycbylfREtYYpmCjnkC5_kHg4yj2tTNo_mmSf3b6ZwzTQOvgaebmlGoUVkaBfZAzB0mnWwmw/exec",
@@ -33,7 +44,31 @@ function App() {
         },
         body: JSON.stringify(data),
       }
-    );
+    )
+      .then((data) => {
+        toast.success("Entry Submitted!", {
+          position: "top-center",
+          hideProgressBar: true,
+          autoClose: 3000,
+          theme: "colored",
+          draggable: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+        });
+        console.log("success");
+      })
+      .catch((error) => {
+        toast.error("Entry Submitted!", {
+          position: "top-center",
+          hideProgressBar: true,
+          autoClose: 3000,
+          theme: "colored",
+          draggable: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+        });
+        console.log("error");
+      });
   };
 
   return (
@@ -48,7 +83,7 @@ function App() {
           }}
         />
         <button className="App-save-button" onClick={DownloadData}>
-          ⇩
+          💾
         </button>
       </div>
       <div className="App-body">
@@ -229,6 +264,7 @@ function App() {
         <div className="App-spacer"> </div>
         <div className="App-spacer"> </div>
       </div>
+      <ToastContainer transition={Slide} />
     </div>
   );
 }
