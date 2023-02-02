@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./App.css";
 
 import Editor from "react-simple-code-editor";
@@ -10,8 +10,14 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [name, setName] = useState("Name");
-  const [data, setData] = useState({ name: "Name" });
+  const [name, setName] = useState("");
+  const [data, setData] = useState({ name: "" });
+  const toastID = useRef(null);
+
+  //Prism.hooks.add('line-numbers', function (env) {
+  //	env.plugins = env.plugins || {};
+  //	env.plugins.lineNumbers = true;
+  //});
 
   const UpdateData = (key, value) => {
     let tmpData = data;
@@ -24,8 +30,8 @@ function App() {
     UpdateData("name", newName);
   };
 
-  const DownloadData = () => {
-    toast.info("Submitting Entry...", {
+  const SendData = () => {
+    toastID.current = toast.info("Sending Responses...", {
       position: "top-center",
       hideProgressBar: true,
       autoClose: 3000,
@@ -46,48 +52,29 @@ function App() {
       }
     )
       .then((data) => {
-        toast.success("Entry Submitted!", {
-          position: "top-center",
-          hideProgressBar: true,
-          autoClose: 3000,
-          theme: "colored",
-          draggable: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-        });
-        console.log("success");
+
+        toast.update(toastID.current, {type: toast.TYPE.SUCCESS, render: "Responses Saved!"})
       })
       .catch((error) => {
-        toast.error("Entry Submitted!", {
-          position: "top-center",
-          hideProgressBar: true,
-          autoClose: 3000,
-          theme: "colored",
-          draggable: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-        });
-        console.log("error");
+        toast.update(toastID.current, {type: toast.TYPE.ERROR, render: "Couldn't Save Responses!"})
       });
   };
 
   return (
     <div className="App">
       <div className="App-header">
-        <div className="App-header-title">Technical Interview:</div>
+        <div className="App-header-title">Technical Interview for </div>
         <input
           className="App-header-input"
+          placeholder="Name"
           value={name}
           onChange={(e) => {
             UpdateName(e.target.value);
           }}
         />
-        <button className="App-save-button" onClick={DownloadData}>
-          💾
-        </button>
       </div>
       <div className="App-body">
-        <div className="App-spacer"> 1 </div>
+        <div className="App-spacer"> 01</div>
         <div className="App-question">
           Using the #define statement, how would you declare a constant that
           returns the number of seconds in a year? Disregard leap years/seconds
@@ -99,7 +86,7 @@ function App() {
           dataKey="q1"
         />
 
-        <div className="App-spacer"> 2 </div>
+        <div className="App-spacer"> 02 </div>
         <div className="App-question">
           Write a code fragment that implements an infinite loop in C.
         </div>
@@ -109,7 +96,7 @@ function App() {
           dataKey="q2"
         />
 
-        <div className="App-spacer"> 3 </div>
+        <div className="App-spacer"> 03 </div>
         <div className="App-question">
           Using the variable 'var', give definitions for the following:
         </div>
@@ -171,22 +158,22 @@ function App() {
           dataKey="q3h"
         />
 
-        <div className="App-spacer"> 4 </div>
+        <div className="App-spacer"> 04 </div>
         <div className="App-question">
           What are the uses of the keyword 'static' in C?
         </div>
 
-        <div className="App-spacer"> 5 </div>
+        <div className="App-spacer"> 05 </div>
         <div className="App-question">
           What are the uses of the keyword 'const' in C?
         </div>
 
-        <div className="App-spacer"> 6 </div>
+        <div className="App-spacer"> 06 </div>
         <div className="App-question">
           What are the uses of the keyword 'volatile' in C?
         </div>
 
-        <div className="App-spacer"> 7 </div>
+        <div className="App-spacer"> 07 </div>
         <div className="App-question">
           What is wrong with the following C function?
         </div>
@@ -198,7 +185,7 @@ function App() {
           dataKey="q7"
         />
 
-        <div className="App-spacer"> 8 </div>
+        <div className="App-spacer"> 08 </div>
         <div className="App-question">
           Given an integer variable 'foo', write a code fragment that:
         </div>
@@ -215,7 +202,7 @@ function App() {
           dataKey="q8b"
         />
 
-        <div className="App-spacer"> 9 </div>
+        <div className="App-spacer"> 09 </div>
         <div className="App-question">
           Sometimes it is necessary to access a specific memory location in an
           embedded system. Write a code fragment in C to set the value of an
@@ -262,6 +249,10 @@ function App() {
         </div>
 
         <div className="App-spacer"> </div>
+
+        <button className="App-save-button" onClick={SendData}>
+          Save
+        </button>
         <div className="App-spacer"> </div>
       </div>
       <ToastContainer transition={Slide} />
@@ -284,27 +275,52 @@ function SingleLineEditor({ updateParentData, dataKey, startVal }) {
   }, []);
 
   return (
-    <Editor
-      className="App-answer-single"
-      value={code}
-      onValueChange={(code) => updateCode(code)}
-      highlight={(code) => highlight(code, languages.arduino)}
-      padding={10}
-      ignoreTabKey={true}
-      style={{
-        fontFamily: '"Fira code", "Fira Mono", monospace',
-        fontSize: 12,
-      }}
-    />
+    <div className="App-split-text">
+      <div
+        className="App-answer-lines"
+        style={{
+          fontFamily: '"Fira code", "Fira Mono", monospace',
+          fontSize: 16,
+        }}
+      >
+        1|
+      </div>
+      <Editor
+        className="App-answer-single"
+        value={code}
+        onValueChange={(code) => updateCode(code)}
+        highlight={(code) => highlight(code, languages.arduino)}
+        padding={5}
+        ignoreTabKey={true}
+        style={{
+          fontFamily: '"Fira code", "Fira Mono", monospace',
+          fontSize: 16,
+        }}
+      />
+    </div>
   );
 }
 
 function MultiLineEditor({ updateParentData, dataKey, startVal }) {
   const [code, setCode] = useState(startVal);
+  const [lineNumbers, setLineNumbers] = useState("1");
 
   const updateCode = (newCode) => {
     setCode(newCode);
     updateParentData(dataKey, newCode);
+
+    let lineText = "";
+    let lines = newCode.split("\n");
+
+    for (let i = 1; i <= Math.max(lines.length, 2); i++) {
+      lineText = lineText + `${i}|\r\n`;
+    }
+
+    if (startVal === "") {
+      lineText = lineText + "..";
+    }
+
+    setLineNumbers(lineText);
   };
 
   useEffect(function initialUpdate() {
@@ -312,18 +328,29 @@ function MultiLineEditor({ updateParentData, dataKey, startVal }) {
   }, []);
 
   return (
-    <Editor
-      className="App-answer-multi"
-      value={code}
-      onValueChange={(code) => updateCode(code)}
-      highlight={(text) => highlight(text, languages.arduino)}
-      padding={10}
-      ignoreTabKey={true}
-      style={{
-        fontFamily: '"Fira code", "Fira Mono", monospace',
-        fontSize: 12,
-      }}
-    />
+    <div className="App-split-text">
+      <div
+        className="App-answer-lines"
+        style={{
+          fontFamily: '"Fira code", "Fira Mono", monospace',
+          fontSize: 16,
+        }}
+      >
+        {lineNumbers}
+      </div>
+      <Editor
+        className="App-answer-multi"
+        value={code}
+        onValueChange={(code) => updateCode(code)}
+        highlight={(text) => highlight(text, languages.arduino)}
+        padding={5}
+        ignoreTabKey={true}
+        style={{
+          fontFamily: '"Fira code", "Fira Mono", monospace',
+          fontSize: 16,
+        }}
+      />
+    </div>
   );
 }
 
