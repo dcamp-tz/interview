@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 import Editor from "react-simple-code-editor";
@@ -30,7 +30,7 @@ function App() {
     UpdateData("name", newName);
   };
 
-  const SendData = () => {
+  const SendData = useCallback(() => {
     toastID.current = toast.info("Sending Responses...", {
       position: "top-center",
       hideProgressBar: true,
@@ -42,7 +42,7 @@ function App() {
     });
 
     fetch(
-      "https://script.google.com/macros/s/AKfycbylfREtYYpmCjnkC5_kHg4yj2tTNo_mmSf3b6ZwzTQOvgaebmlGoUVkaBfZAzB0mnWwmw/exec",
+      "https://script.google.com/macros/s/AKfycbzPBRm2doUe0G-ZIy4ETA7FLN2MwdIftev0JOpG61sbxKQxsH1X4KkHkkzPvxf-8V8fCg/exec",
       {
         method: "POST",
         headers: {
@@ -52,13 +52,20 @@ function App() {
       }
     )
       .then((data) => {
-
-        toast.update(toastID.current, {type: toast.TYPE.SUCCESS, render: "Responses Saved!"})
+        console.log(data)
+        toast.update(toastID.current, {
+          type: toast.TYPE.SUCCESS,
+          render: "Responses Saved!",
+        });
       })
       .catch((error) => {
-        toast.update(toastID.current, {type: toast.TYPE.ERROR, render: "Couldn't Save Responses!"})
+        console.error(error)
+        toast.update(toastID.current, {
+          type: toast.TYPE.ERROR,
+          render: "Couldn't Save Responses!",
+        });
       });
-  };
+  }, []);
 
   return (
     <div className="App">
@@ -77,8 +84,8 @@ function App() {
         <div className="App-spacer"> 01</div>
         <div className="App-question">
           Using the #define statement, how would you declare a constant that
-          returns the number of seconds in a year? Disregard leap years/seconds
-          in your answer.
+          evaluates to the number of seconds in a year? Disregard leap
+          years/seconds in your answer.
         </div>
         <SingleLineEditor
           updateParentData={UpdateData}
@@ -224,7 +231,7 @@ function App() {
         <MultiLineEditor
           updateParentData={UpdateData}
           startVal={
-            '__interrupt__ double compute_area(double radius)\n{\n   double area = PI * radius * radius;\n   printf("\\nArea = %f", area);\n   return area;\n}'
+            '__interrupt__ double compute_area(double radius)\n{\n  double area = PI * radius * radius;\n  printf("\\nArea = %f", area);\n  return area;\n}'
           }
           dataKey="q10"
         />
@@ -291,7 +298,8 @@ function SingleLineEditor({ updateParentData, dataKey, startVal }) {
         onValueChange={(code) => updateCode(code)}
         highlight={(code) => highlight(code, languages.arduino)}
         padding={5}
-        ignoreTabKey={true}
+        ignoreTabKey={false}
+        tabSize={2}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',
           fontSize: 16,
@@ -344,7 +352,8 @@ function MultiLineEditor({ updateParentData, dataKey, startVal }) {
         onValueChange={(code) => updateCode(code)}
         highlight={(text) => highlight(text, languages.arduino)}
         padding={5}
-        ignoreTabKey={true}
+        ignoreTabKey={false}
+        tabSize={2}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',
           fontSize: 16,
