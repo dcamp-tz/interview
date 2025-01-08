@@ -44,9 +44,10 @@ function App() {
     fetch(
       "https://script.google.com/macros/s/AKfycbzPBRm2doUe0G-ZIy4ETA7FLN2MwdIftev0JOpG61sbxKQxsH1X4KkHkkzPvxf-8V8fCg/exec",
       {
+        redirect: "follow",
         method: "POST",
         headers: {
-          "Content-Type": "text/plain",
+          "Content-Type": "text/plain;charset=utf-8",
         },
         body: JSON.stringify(data),
       }
